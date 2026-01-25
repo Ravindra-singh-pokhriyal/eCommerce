@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::Layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div class="container mt-5 p-5">
+        <form action="/user/save-order" method="post">
+            <div class="row">
+                <div class="col-md-6">
+    <!--                <form>-->
+                        <div class="mb-3 row">
+                            <p class="text-center fs-2">Fill Address</p>
+                            <hr>
+                            <div class="col p-1">
+                                <div>
+                                    <label>First Name</label>
+                                </div>
+                                <div>
+                                <input type="text" name="firstName" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>Last Name</label>
+                                </div>
+                                <div>
+                                <input type="text" name="lastName" required class="from-control mt-1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>Email</label>
+                                </div>
+                                <div>
+                                    <input type="email" name="email" required class="from-control mt-1">
+                                </div>
+
+                            </div>
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>Mobile Number</label>
+                                </div>
+                                <div>
+                                    <input type="number" name="mobileNo" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 row">
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>Address</label>
+                                </div>
+                                <div>
+                                    <input type="text" name="address" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>City</label>
+                                </div>
+                                <div>
+                                    <input type="text" name="city" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3 row">
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>State</label>
+                                </div>
+                                <div>
+                                    <input type="text" name="state" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                            <div class="col p-1">
+                                <div>
+                                    <label>Pincode</label>
+                                </div>
+                                <div>
+                                    <input type="number" name="pincode" required class="from-control mt-1">
+                                </div>
+                            </div>
+
+                        </div>
+    <!--                </form>-->
+                </div>
+                <div class="col-md-6 p-2 mt-1">
+                    <p class="text-center fs-4">Payment Type</p>
+                    <hr>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Price</td>
+                                    <td>:</td>
+                                    <td>&#8377; [[${orderPrice}]]</td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Fee</td>
+                                    <td>:</td>
+                                    <td>&#8377; 200</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax</td>
+                                    <td>:</td>
+                                    <td>&#8377; 50</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Total Price</td>
+                                    <td>:</td>
+                                    <td>&#8377; [[${totalOrderPrice}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card shadow p-3 mb-5 mt-3 bg-body-tertiary rounded">
+                        <div class="card-body">
+    <!--                        <form action="#" method="post">-->
+                                <div class="mb-3">
+                                    <label class="form-label">Select Payment Method</label>
+                                    <select name="paymentType" required class="form-control text-center">
+                                        <option>---Select---</option>
+                                        <option value="COD">Cash On Delivery</option>
+                                        <option value="ONLINE">Online Payment</option>
+                                    </select>
+                                </div>
+                                <button class="btn bg-primary text-white col-md-12">Place Order</button>
+    <!--                        </form>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
