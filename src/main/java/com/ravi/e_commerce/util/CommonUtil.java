@@ -22,7 +22,7 @@ public class CommonUtil {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("ravipokhriyal0@gmail.com", "SpringVault");
+        helper.setFrom("<Email Id>", "SpringVault");
         helper.setTo(reciepentEmail);
         String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>"
                 + "<p>Click the link below to change your password:</p>" + "<p><a href=\"" +url
