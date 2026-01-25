@@ -197,37 +197,8 @@ Ravindra-singh-pokhriyal-eCommerce-d88d0ee/
                 └── 📂 ravi/
                     └── 📂 e_commerce/
                         └── 📄 ECommerceApplicationTests.java # Application context loading tests
-```
-
 ---
 
-## 📸 Demo & Screenshots
-
-Explore the visual design and key user flows of the SpringVault Shop application.
-
-### 🖼️ Screenshots
-
-
-<img src="https://drive.google.com/file/d/1DqTnaU4Mbwr0nG-o7WsZAZgZivPi6gme/view?usp=drive_link" alt="App Screenshot 1" width="100%">
-<em><p align="center">The dynamic homepage featuring promotional carousels (using assets like <code>carousel1.jpg</code>) and initial product listings.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+2:+Product+Details+View" alt="App Screenshot 2" width="100%">
-<em><p align="center">A detailed product page (<code>view_product.html</code>) showcasing inventory images and the "Add to Cart" functionality.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+3:+User+Registration+Flow" alt="App Screenshot 3" width="100%">
-<em><p align="center">The secure user registration interface (<code>register.html</code>) leveraging the security configuration.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+4:+Shopping+Cart+Summary" alt="App Screenshot 4" width="100%">
-<em><p align="center">The interactive shopping cart page (<code>cart.html</code>) allowing users to review and modify items before checkout.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+5:+Admin+Dashboard+Overview" alt="App Screenshot 5" width="100%">
-<em><p align="center">The administrative index page (<code>admin/index.html</code>) providing quick statistics and navigation to management tools.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+6:+Admin+Product+Management" alt="App Screenshot 6" width="100%">
-<em><p align="center">The dedicated admin view for managing products (<code>admin/products.html</code>), including options for editing and adding new items.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+7:+Order+History+for+User" alt="App Screenshot 7" width="100%">
-<em><p align="center">The user's personalized order history (<code>user/my_orders.html</code>) tracking status via the <code>OrderStatus.java</code> utility.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+8:+Admin+Order+Processing" alt="App Screenshot 8" width="100%">
-<em><p align="center">The admin order management view (<code>admin/orders.html</code>) designed for efficient processing and status updates.</p></em>
-<img src="https://placehold.co/800x450/2d2d4d/ffffff?text=App+Screenshot+9:+Login+Interface" alt="App Screenshot 9" width="100%">
-<em><p align="center">The stylized user login interface (<code>login.html</code>) integrating application branding and security fields.</p></em>
-
----
 
 ## 🚀 Getting Started
 
@@ -390,22 +361,7 @@ We're actively seeking help with:
 
 ---
 
-## 📝 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for complete details.
-
-### What this means:
-
-- ✅ **Commercial use:** You are permitted to use this project commercially.
-- ✅ **Modification:** You may modify the source code to suit your needs.
-- ✅ **Distribution:** You can freely distribute the software.
-- ✅ **Private use:** You can use this project for private development purposes.
-- ⚠️ **Liability:** The software is provided "as is," without warranty of any kind.
-- ⚠️ **Trademark:** This license does not grant rights to use the names or trademarks of the project creators.
-
----
-
-<p align="center">Made with ❤️ for the Java and Spring Boot Community</p>
+<p align="center">Made by Ravindra Singh Pokhriyal by Java and Spring Boot</p>
 <p align="center">
   <a href="#-table-of-contents">⬆️ Back to Top</a>
 </p>
