@@ -21,11 +21,9 @@
 - [✨ Key Features](#-key-features)
 - [🛠️ Tech Stack & Architecture](#-tech-stack--architecture)
 - [📁 Project Structure](#-project-structure)
-- [📸 Demo & Screenshots](#-demo--screenshots)
 - [🚀 Getting Started](#-getting-started)
 - [🔧 Usage](#-usage)
 - [🤝 Contributing](#-contributing)
-- [📝 License](#-license)
 
 ---
 
