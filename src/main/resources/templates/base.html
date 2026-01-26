@@ -34,29 +34,30 @@
                         <a class="nav-link active" aria-current="page" href="/"><i
                                 class="fa-solid fa-house"></i>Home</a>
                     </li>
-                    <th:block th:if="${user!=null}">
-                        <th:block th:if="${user.role=='ROLE_USER'}">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/products">Product</a>
-                            </li>
+                    <!-- Show Product and Category only for guests or regular users. Admin should not see these. -->
+                    <th:block th:if="${user==null or user.role=='ROLE_USER'}">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/products">Product</a>
+                        </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Category
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li th:each="c:${categorys}"><a class="dropdown-item" th:href="@{'/products?category='+${c.name}}">[[${c.name}]]</a></li>
-                                </ul>
-                            </li>
-                        </th:block>
-                        <th:block th:if="${user.role=='ROLE_ADMIN'}">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/admin/"><i class="fa-solid fa-circle-user"></i>Admin</a>
-                            </li>
-                        </th:block>
-
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li th:each="c:${categorys}"><a class="dropdown-item" th:href="@{'/products?category='+${c.name}}">[[${c.name}]]</a></li>
+                            </ul>
+                        </li>
                     </th:block>
+
+                    <!-- Show Admin link only for admin users -->
+                    <th:block th:if="${user!=null and user.role=='ROLE_ADMIN'}">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/admin/"><i class="fa-solid fa-circle-user"></i>Admin</a>
+                        </li>
+                    </th:block>
+
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <th:block th:if="${user==null}">
@@ -76,7 +77,7 @@
                         <th:block th:if="${user.role=='ROLE_USER'}">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/user/cart">
-                                <i class="fa-solid fa-cart-shopping"></i></i>
+                                <i class="fa-solid fa-cart-shopping"></i>
                                 Cart[ [[${countCart}]] ]</a>
                         </li>
                         </th:block>

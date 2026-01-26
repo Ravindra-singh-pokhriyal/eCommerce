@@ -6,6 +6,7 @@ import com.ravi.e_commerce.model.ProductOrder;
 import com.ravi.e_commerce.model.UserDtls;
 import com.ravi.e_commerce.service.*;
 
+import com.ravi.e_commerce.util.OrderStatus;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -259,6 +260,31 @@ public class AdminController {
         List<ProductOrder> allOrders = orderService.getAllOrders();
         model.addAttribute("orders", allOrders);
         return "/admin/orders";
+    }
+
+    @PostMapping("update-order-status")
+    public String updateOrderStatus(@RequestParam Integer id, @RequestParam Integer st, HttpSession session) {
+
+        OrderStatus[] values = OrderStatus.values();
+        String status = null;
+
+        for(OrderStatus orderStatus : values) {
+            if (orderStatus.getId().equals(st)){
+                status = orderStatus.getName();
+            }
+        }
+
+//        System.out.println("Values: "+ values);
+        Boolean updateOrder = orderService.updateOrderStatus(id, status);
+
+        if(updateOrder) {
+            session.setAttribute("successMsg", "Status Updated");
+        } else {
+            session.setAttribute("errorMsg", "Something went wrong");
+        }
+
+
+        return "redirect:/admin/orders";
     }
 
 }
