@@ -60,7 +60,7 @@ public class CommonUtil {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("ravipokhriyal0@gmail.com", "SpringVault");  // sender address
+        helper.setFrom("**************@gmail.com", "SpringVault");  // sender address
         helper.setTo(order.getOrderAddress().getEmail());
 
         // Work with a fresh copy of the template for each email
