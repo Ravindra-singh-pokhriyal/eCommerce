@@ -43,8 +43,6 @@ public class CommonUtil {
     }
 
     // Template for product order notification emails.
-    // Use a fresh copy of this template for every email to avoid accidental mutation
-    // of the original template (previous implementation used a mutable field).
     private static final String ORDER_MAIL_TEMPLATE =
             "<p>Hello [[name]]</p><p>Thank you order <b>[[orderStatus]]</b>.</p>"
                     + "<p><b>Product Details : </b></p>"
