@@ -23,7 +23,7 @@ public class CommonUtil {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("ravipokhriyal0@gmail.com", "SpringVault");  //it containe the mail id from which you want to send the mails to the users
+        helper.setFrom("**************@gmail.com", "SpringVault");  //it containe the mail id from which you want to send the mails to the users
         helper.setTo(reciepentEmail);
         String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>"
                 + "<p>Click the link below to change your password:</p>" + "<p><a href=\"" +url
