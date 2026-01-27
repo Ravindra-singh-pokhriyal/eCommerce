@@ -40,12 +40,12 @@
                         <td>
                             [[${order.status}]]</td>
                         <td class="text-center">
-                            <th:block th:if="${order.status!='Cancelled'}">
-                                <a th:href="@{'/user/update-status?id='+${order.id}+'&st=6' }" class="btn btn-danger">Cancel Order</a>
+                            <th:block th:if="${order.status=='Cancelled' or order.status=='Delivered'}">
+                                <a th:href="@{'/user/update-status?id='+${order.id}+'&st=6' }" class="btn btn-danger disabled">Cancel Order</a>
                             </th:block>
 
-                            <th:block th:unless="${order.status!='Cancelled'}">
-                                <a th:href="@{'/user/update-status?id='+${order.id}+'&st=6' }" class="btn btn-danger disabled">Cancel Order</a>
+                            <th:block th:unless="${order.status=='Cancelled' or order.status=='Delivered'}">
+                                <a th:href="@{'/user/update-status?id='+${order.id}+'&st=6' }" class="btn btn-danger">Cancel Order</a>
                             </th:block>
                         </td>
                     </tr>

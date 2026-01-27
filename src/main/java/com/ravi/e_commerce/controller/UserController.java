@@ -6,9 +6,11 @@ import java.util.List;
 import com.ravi.e_commerce.model.*;
 import com.ravi.e_commerce.service.CartService;
 import com.ravi.e_commerce.service.OrderService;
+import com.ravi.e_commerce.util.CommonUtil;
 import com.ravi.e_commerce.util.OrderStatus;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ravi.e_commerce.service.CategoryService;
 import com.ravi.e_commerce.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/user")
@@ -32,6 +35,12 @@ public class UserController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CommonUtil commonUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String home(){
@@ -111,7 +120,7 @@ public class UserController {
     }
 
     @PostMapping("/save-order")
-    public String saveOrder(@ModelAttribute OrderRequest request,Principal principal) {
+    public String saveOrder(@ModelAttribute OrderRequest request,Principal principal) throws Exception {
        // System.out.println(request);
 
         UserDtls user = getLoggedInUserDetails(principal);
@@ -140,26 +149,82 @@ public class UserController {
     @GetMapping("update-status")
     public String updateOrderStatus(@RequestParam Integer id, @RequestParam Integer st, HttpSession session) {
 
+        // Map the integer status id to the corresponding enum name
         OrderStatus[] values = OrderStatus.values();
         String status = null;
 
         for(OrderStatus orderStatus : values) {
             if (orderStatus.getId().equals(st)){
                 status = orderStatus.getName();
+                break; // once matched, break out
             }
         }
 
-//        System.out.println("Values: "+ values);
-        Boolean updateOrder = orderService.updateOrderStatus(id, status);
+        // If no matching status found, set an error message and redirect
+        if (status == null) {
+            session.setAttribute("errorMsg", "Invalid status selected.");
+            return "redirect:/user/user-orders";
+        }
 
-        if(updateOrder) {
+        // Update the order status in the database and receive the updated entity back
+        ProductOrder updateOrder = orderService.updateOrderStatus(id, status);
+
+        // Ensure we have the saved updated order before sending email
+        if (updateOrder != null) {
+            try{
+                // Send the email with the updated order details and final status
+                commonUtil.sendMailForProductOrder(updateOrder, status);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
             session.setAttribute("successMsg", "Status Updated");
         } else {
+            // If update failed, show an error
             session.setAttribute("errorMsg", "Something went wrong");
         }
 
-
         return "redirect:/user/user-orders";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "/user/profile";
+    }
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@ModelAttribute UserDtls user, @RequestParam MultipartFile img, HttpSession session) {
+        UserDtls updatedUserProfile = userService.updateUserProfile(user, img);
+
+        if (ObjectUtils.isEmpty(updatedUserProfile)) {
+            session.setAttribute("errorMsg", "Profile not updated");
+        } else {
+            session.setAttribute("successMsg", "Profile updated successfully");
+        }
+        return "redirect:/user/profile";
+    }
+    
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String newPassword, @RequestParam String currentPassword, Principal principal, HttpSession session) {
+
+        UserDtls user = getLoggedInUserDetails(principal);
+
+        boolean matches = passwordEncoder.matches(currentPassword, user.getPassword());
+
+        if(matches) {
+            String encodePassword = passwordEncoder.encode(newPassword);
+            user.setPassword(encodePassword);
+            UserDtls updateUser = userService.updateUser(user);
+
+            if(ObjectUtils.isEmpty(updateUser)) {
+                session.setAttribute("errorMsg", "Something went wrong. Password not changed.");
+            } else {
+                session.setAttribute("successMsg", "Password changed successfully.");
+            }
+        } else {
+            session.setAttribute("errorMsg", "Wrong password");
+        }
+        return "redirect:/user/profile";
     }
 
 

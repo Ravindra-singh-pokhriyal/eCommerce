@@ -6,6 +6,7 @@ import com.ravi.e_commerce.model.ProductOrder;
 import com.ravi.e_commerce.model.UserDtls;
 import com.ravi.e_commerce.service.*;
 
+import com.ravi.e_commerce.util.CommonUtil;
 import com.ravi.e_commerce.util.OrderStatus;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class AdminController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private CommonUtil commonUtil;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model model){
@@ -265,21 +269,38 @@ public class AdminController {
     @PostMapping("update-order-status")
     public String updateOrderStatus(@RequestParam Integer id, @RequestParam Integer st, HttpSession session) {
 
+        // Map the integer status id to the corresponding enum name
         OrderStatus[] values = OrderStatus.values();
         String status = null;
 
         for(OrderStatus orderStatus : values) {
             if (orderStatus.getId().equals(st)){
                 status = orderStatus.getName();
+                break; // once matched, break out
             }
         }
 
-//        System.out.println("Values: "+ values);
-        Boolean updateOrder = orderService.updateOrderStatus(id, status);
+        // If no matching status found, set an error message and redirect
+        if (status == null) {
+            session.setAttribute("errorMsg", "Invalid status selected.");
+            return "redirect:/admin/orders";
+        }
 
-        if(updateOrder) {
+        // Update the order status in the database and receive the updated entity back
+        ProductOrder updateOrder = orderService.updateOrderStatus(id, status);
+
+        // Ensure we have the saved updated order before sending email
+        if (updateOrder != null) {
+            try{
+                // Send the email with the updated order details and final status
+                commonUtil.sendMailForProductOrder(updateOrder, status);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
             session.setAttribute("successMsg", "Status Updated");
         } else {
+            // If update failed, show an error
             session.setAttribute("errorMsg", "Something went wrong");
         }
 

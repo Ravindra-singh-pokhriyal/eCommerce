@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ravi.e_commerce.model.UserDtls;
 import org.apache.catalina.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -28,4 +29,6 @@ public interface UserService {
     public UserDtls getUserByToken(String token);
 
     public UserDtls updateUser(UserDtls user);
+
+    public UserDtls updateUserProfile(UserDtls user, MultipartFile img);
 }

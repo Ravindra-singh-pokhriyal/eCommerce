@@ -87,8 +87,10 @@
                                     <i class="fa-regular fa-circle-user"></i> [[${user.name}]]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li><a class="dropdown-item" href="/user/user-orders">My Order</a></li>
+                                    <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                                    <th:block th:if="${user.role=='ROLE_USER'}">
+                                        <li><a class="dropdown-item" href="/user/user-orders">My Order</a></li>
+                                    </th:block>
                                     <li><a class="dropdown-item" href="/logout">Logout</a></li>
                                 </ul>
                             </li>
