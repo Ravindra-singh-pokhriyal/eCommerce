@@ -198,8 +198,14 @@ public class AdminController {
 
 
     @GetMapping("/products")
-    public String loadViewProduct(Model model){
-        model.addAttribute("products", productService.getAllProducts());
+    public String loadViewProduct(@RequestParam(defaultValue = "") String ch, Model model){
+        List<Product> products = null;
+        if(ch !=null && ch.length() > 0) {
+            products = productService.searchProducts(ch);
+        } else {
+            products = productService.getAllProducts();
+        }
+        model.addAttribute("products", products);
         return "admin/products";
     }
 
@@ -263,6 +269,7 @@ public class AdminController {
     public String getAllOrder(Model model) {
         List<ProductOrder> allOrders = orderService.getAllOrders();
         model.addAttribute("orders", allOrders);
+        model.addAttribute("search", false);
         return "/admin/orders";
     }
 
@@ -306,6 +313,29 @@ public class AdminController {
 
 
         return "redirect:/admin/orders";
+    }
+
+    @GetMapping("/search-ordrer")
+    public String searchProduct(@RequestParam String orderId, Model model, HttpSession session) {
+
+        if(orderId !=null && orderId.length() > 0) {
+            ProductOrder order = orderService.getOrderByOrderId(orderId);
+
+            if (ObjectUtils.isEmpty(order)) {
+                session.setAttribute("errorMsg", "Order ID not found");
+                model.addAttribute("orders", null);
+            } else {
+                model.addAttribute("order", order);
+            }
+
+            model.addAttribute("search", true);
+        } else {
+            List<ProductOrder> allOrders = orderService.getAllOrders();
+            model.addAttribute("orders", allOrders);
+            model.addAttribute("search", false);
+        }
+
+        return "/admin/orders";
     }
 
 }

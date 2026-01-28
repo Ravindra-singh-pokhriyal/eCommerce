@@ -191,4 +191,13 @@ public class Homecontroller {
             return "message";
         }
     }
+
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam String ch, Model model) {
+        List<Product> products = productService.searchProducts(ch);
+        model.addAttribute("products", products);
+        List<Category> categories = categoryService.getAllActiveCategory();
+        model.addAttribute("categories", categories);
+        return "product";
+    }
 }
