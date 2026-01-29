@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,13 +88,28 @@ public class Homecontroller {
     }
 
     @GetMapping("/products")
-    public String products(Model model, @RequestParam(value = "category", defaultValue = "") String category){
-        List<Category> categories = categoryService.getAllActiveCategory();
-        List<Product> products = productService.getAllActiveProduct(category);
+    public String products(Model model, @RequestParam(value = "category", defaultValue = "") String category,
+                           @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize){
 
+        List<Category> categories = categoryService.getAllActiveCategory();
         model.addAttribute("categories", categories);
-        model.addAttribute("products", products);
         model.addAttribute("paramValue", category);
+
+
+//        List<Product> products = productService.getAllActiveProduct(category);
+//        model.addAttribute("products", products);
+
+        Page<Product> page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+        List<Product> products = page.getContent();
+        model.addAttribute("products", products);
+        model.addAttribute("productSize", products.size());
+
+        model.addAttribute("pageNo", page.getNumber());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("TotalElements", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
         return "product";
     }
 
