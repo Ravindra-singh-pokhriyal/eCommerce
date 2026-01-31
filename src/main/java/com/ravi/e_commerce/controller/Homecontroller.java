@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,8 +89,8 @@ public class Homecontroller {
     }
 
     @GetMapping("/products")
-    public String products(Model model, @RequestParam(value = "category", defaultValue = "") String category,
-                           @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize){
+    public String products(Model model,@RequestParam(defaultValue = "") String ch,@RequestParam(value = "category", defaultValue = "") String category,
+                           @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize){
 
         List<Category> categories = categoryService.getAllActiveCategory();
         model.addAttribute("categories", categories);
@@ -98,8 +99,14 @@ public class Homecontroller {
 
 //        List<Product> products = productService.getAllActiveProduct(category);
 //        model.addAttribute("products", products);
+        Page<Product> page = null;
+        if(StringUtils.isEmpty(ch)) {
+            page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+        } else {
+            page = productService.searchActiveProductPagination(pageNo, pageSize, category, ch);
+        }
 
-        Page<Product> page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+
         List<Product> products = page.getContent();
         model.addAttribute("products", products);
         model.addAttribute("productSize", products.size());
@@ -113,6 +120,7 @@ public class Homecontroller {
         return "product";
     }
 
+    //product details page
     @GetMapping("/product/{id}")
     public String Product(@PathVariable int id, Model model){
         Product productById = productService.getProductById(id);
@@ -208,12 +216,28 @@ public class Homecontroller {
         }
     }
 
-    @GetMapping("/search")
-    public String searchProduct(@RequestParam String ch, Model model) {
-        List<Product> products = productService.searchProducts(ch);
-        model.addAttribute("products", products);
-        List<Category> categories = categoryService.getAllActiveCategory();
-        model.addAttribute("categories", categories);
-        return "product";
-    }
+//    @GetMapping("/search")
+//    public String searchProduct(@RequestParam String ch, Model model) {
+//        // if search string is empty, show regular products page
+//        if (ch == null || ch.trim().isEmpty()) {
+//            return "redirect:/products";
+//        }
+//
+//        List<Product> products = productService.searchProducts(ch);
+//        model.addAttribute("products", products);
+//        model.addAttribute("productSize", products.size());
+//
+//        // Provide minimal pagination attributes expected by product.html
+//        model.addAttribute("pageNo", 0);
+//        model.addAttribute("pageSize", products.size() > 0 ? products.size() : 6);
+//        model.addAttribute("TotalElements", products.size());
+//        model.addAttribute("totalPages", 1);
+//        model.addAttribute("isFirst", true);
+//        model.addAttribute("isLast", true);
+//
+//        List<Category> categories = categoryService.getAllActiveCategory();
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("paramValue", "");
+//        return "product";
+//    }
 }

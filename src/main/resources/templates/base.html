@@ -21,8 +21,19 @@
     <!-- Start Navbar -->
     <nav class="navbar navbar-expand-lg bg-info fixed-top navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"><i class="fa-solid fa-store"></i> SpringVault Shop
-            </a>
+            <th:block th:if="${user==null}">
+                <a class="navbar-brand" href="/"><i class="fa-solid fa-store"></i> SpringVault Shop</a>
+            </th:block>
+            <th:block th:unless="${user==null}">
+                <th:block th:if="${user.role=='ROLE_ADMIN'}">
+                    <a class="navbar-brand" href="/admin/"><i class="fa-solid fa-store"></i> SpringVault Shop</a>
+                </th:block>
+
+                <th:block th:unless="${user.role=='ROLE_ADMIN'}">
+                    <a class="navbar-brand" href="/"><i class="fa-solid fa-store"></i> SpringVault Shop</a>
+                </th:block>
+            </th:block>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -30,10 +41,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/"><i
-                                class="fa-solid fa-house"></i>Home</a>
-                    </li>
+                    <th:block th:if="${user==null}">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/"><i
+                                    class="fa-solid fa-house"></i>Home</a>
+                        </li>
+                    </th:block>
+                    <th:block th:unless="${user==null}">
+                        <li class="nav-item" th:if="${user.role=='ROLE_ADMIN'}">
+                            <a class="nav-link active" aria-current="page" href="/admin/"><i
+                                    class="fa-solid fa-house"></i>Home</a>
+                        </li>
+                        <li class="nav-item" th:unless="${user.role=='ROLE_ADMIN'}">
+                            <a class="nav-link active" aria-current="page" href="/"><i
+                                    class="fa-solid fa-house"></i>Home</a>
+                        </li>
+                    </th:block>
                     <!-- Show Product and Category only for guests or regular users. Admin should not see these. -->
                     <th:block th:if="${user==null or user.role=='ROLE_USER'}">
                         <li class="nav-item">
@@ -51,13 +74,6 @@
                         </li>
                     </th:block>
 
-                    <!-- Show Admin link only for admin users -->
-                    <th:block th:if="${user!=null and user.role=='ROLE_ADMIN'}">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/admin/"><i class="fa-solid fa-circle-user"></i>Admin</a>
-                        </li>
-                    </th:block>
-
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <th:block th:if="${user==null}">
@@ -67,9 +83,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Admin</a>
                         </li>
                     </th:block>
 
@@ -87,11 +100,16 @@
                                     <i class="fa-regular fa-circle-user"></i> [[${user.name}]]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+
+                                    <li th:if="${user.role=='ROLE_USER'}"><a class="dropdown-item" href="/user/profile">Profile</a></li>
+
+                                    <li th:if="${user.role=='ROLE_ADMIN'}"><a class="dropdown-item" href="/admin/profile">Profile</a></li>
+
                                     <th:block th:if="${user.role=='ROLE_USER'}">
                                         <li><a class="dropdown-item" href="/user/user-orders">My Order</a></li>
                                     </th:block>
-                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                    <li><a class="dropdown-item" href="/logout"><i
+                                            class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a></li>
                                 </ul>
                             </li>
                         </ul>

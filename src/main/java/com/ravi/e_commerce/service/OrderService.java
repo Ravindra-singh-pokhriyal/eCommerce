@@ -2,6 +2,7 @@ package com.ravi.e_commerce.service;
 
 import com.ravi.e_commerce.model.OrderRequest;
 import com.ravi.e_commerce.model.ProductOrder;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface OrderService {
     public List<ProductOrder> getAllOrders();
 
     public ProductOrder getOrderByOrderId(String orderId);
+
+    public Page<ProductOrder> getAllOrdersPagination(Integer pageNo, Integer pageSize);
 }

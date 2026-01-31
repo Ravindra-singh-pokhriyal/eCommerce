@@ -11,6 +11,8 @@ import com.ravi.e_commerce.util.OrderStatus;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -48,6 +50,9 @@ public class AdminController {
     @Autowired
     private CommonUtil commonUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @ModelAttribute
     public void getUserDetails(Principal p, Model model){
         if (p!=null) {
@@ -76,8 +81,21 @@ public class AdminController {
     }
 
     @GetMapping("/category")
-    public String category(Model model){
-        model.addAttribute("categorys", categoryService.getAllCategory());
+    public String category(Model model, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                           @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize){
+//        model.addAttribute("categorys", categoryService.getAllCategory());
+        Page<Category> page = categoryService.getAllCategoryPagination(pageNo, pageSize);
+
+        List<Category> categorys = page.getContent();
+        model.addAttribute("categorys", categorys);
+
+        model.addAttribute("pageNo", page.getNumber());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("TotalElements", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
+
         return "admin/category";
     }
 
@@ -198,14 +216,34 @@ public class AdminController {
 
 
     @GetMapping("/products")
-    public String loadViewProduct(@RequestParam(defaultValue = "") String ch, Model model){
-        List<Product> products = null;
+    public String loadViewProduct(@RequestParam(defaultValue = "") String ch, Model model, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                                  @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize){
+//        List<Product> products = null;
+//        if(ch !=null && ch.length() > 0) {
+//            products = productService.searchProducts(ch);
+//        } else {
+//            products = productService.getAllProducts();
+//        }
+//        model.addAttribute("products", products);
+
+        Page<Product> page = null;
         if(ch !=null && ch.length() > 0) {
-            products = productService.searchProducts(ch);
+            page = productService.searchProductPagination(pageNo,pageSize,ch);
         } else {
-            products = productService.getAllProducts();
+            page = productService.getAllProductPagination(pageNo,pageSize);
         }
+//        model.addAttribute("products", page.);
+
+        List<Product> products = page.getContent();
         model.addAttribute("products", products);
+
+        model.addAttribute("pageNo", page.getNumber());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("TotalElements", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
+
         return "admin/products";
     }
 
@@ -247,14 +285,32 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String getAllUsers(Model model) {
-        List<UserDtls> user = userService.getUsers("ROLE_USER");
-        model.addAttribute("users", user);
+    public String getAllUsers(Model model, @RequestParam Integer type,@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                              @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize) {
+//        List<UserDtls> user = userService.getUsers("ROLE_USER");
+//        model.addAttribute("users", user);
+
+        Page<UserDtls> page = null;
+        if (type == 1) {
+            page = userService.getUserPagination("ROLE_USER", pageNo, pageSize);
+        } else {
+            page = userService.getUserPagination("ROLE_ADMIN", pageNo, pageSize);
+        }
+
+        model.addAttribute("Usertype", type);
+        model.addAttribute("users", page.getContent());
+
+        model.addAttribute("pageNo", page.getNumber());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("TotalElements", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
         return "/admin/users";
     }
 
     @GetMapping("/updateSts")
-    public String updateAccountStatus(@RequestParam Boolean status, @RequestParam Integer id, HttpSession session) {
+    public String updateAccountStatus(@RequestParam Boolean status, @RequestParam Integer id,@RequestParam Integer type, HttpSession session) {
 
         Boolean f = userService.updateAccountStatus(id,status);
         if(f) {
@@ -262,14 +318,26 @@ public class AdminController {
         } else{
             session.setAttribute("errorMsg" , "Something wrong with server!!");
         }
-        return "redirect:/admin/users";     
+        return "redirect:/admin/users?type="+type;
     }
 
     @GetMapping("/orders")
-    public String getAllOrder(Model model) {
-        List<ProductOrder> allOrders = orderService.getAllOrders();
-        model.addAttribute("orders", allOrders);
+    public String getAllOrder(Model model,@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                              @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize) {
+//        List<ProductOrder> allOrders = orderService.getAllOrders();
+//        model.addAttribute("orders", allOrders);
+//        model.addAttribute("search", false);
+
+        Page<ProductOrder> page = orderService.getAllOrdersPagination(pageNo,pageSize);
+        model.addAttribute("orders", page.getContent());
         model.addAttribute("search", false);
+
+        model.addAttribute("pageNo", page.getNumber());
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("TotalElements", page.getTotalElements());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("isFirst", page.isFirst());
+        model.addAttribute("isLast", page.isLast());
         return "/admin/orders";
     }
 
@@ -316,7 +384,8 @@ public class AdminController {
     }
 
     @GetMapping("/search-ordrer")
-    public String searchProduct(@RequestParam String orderId, Model model, HttpSession session) {
+    public String searchProduct(@RequestParam String orderId, Model model, HttpSession session,@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                                @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize) {
 
         if(orderId !=null && orderId.length() > 0) {
             ProductOrder order = orderService.getOrderByOrderId(orderId);
@@ -330,12 +399,90 @@ public class AdminController {
 
             model.addAttribute("search", true);
         } else {
-            List<ProductOrder> allOrders = orderService.getAllOrders();
-            model.addAttribute("orders", allOrders);
+//            List<ProductOrder> allOrders = orderService.getAllOrders();
+//            model.addAttribute("orders", allOrders);
+//            model.addAttribute("search", false);
+
+            Page<ProductOrder> page = orderService.getAllOrdersPagination(pageNo,pageSize);
+            model.addAttribute("orders", page);
             model.addAttribute("search", false);
+
+            model.addAttribute("pageNo", page.getNumber());
+            model.addAttribute("pageSize", pageSize);
+            model.addAttribute("TotalElements", page.getTotalElements());
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("isFirst", page.isFirst());
+            model.addAttribute("isLast", page.isLast());
         }
 
         return "/admin/orders";
+    }
+
+    @GetMapping("/add-admin")
+    public String loadAddAdmin(){
+        return "/admin/add_admin";
+    }
+
+    @PostMapping("/save-admin")
+    public String saveAdmin(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
+        String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+        user.setProfileImage(imageName);
+        UserDtls saveUser = userService.saveAdmin(user);
+
+        if(!ObjectUtils.isEmpty(saveUser)) {
+            if(!file.isEmpty()) {
+                File saveFile = new ClassPathResource("static/images").getFile();
+
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+                        + file.getOriginalFilename());
+
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+            session.setAttribute("successMsg", "Admin Created Successfully.");
+        } else {
+            session.setAttribute("errorMsg", "Something went wrong!!");
+        }
+        return "redirect:/admin/add-admin";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "/admin/profile";
+    }
+
+    @PostMapping("/update-profile")
+    public String updateProfile(@ModelAttribute UserDtls user, @RequestParam MultipartFile img, HttpSession session) {
+        UserDtls updatedUserProfile = userService.updateUserProfile(user, img);
+
+        if (ObjectUtils.isEmpty(updatedUserProfile)) {
+            session.setAttribute("errorMsg", "Profile not updated");
+        } else {
+            session.setAttribute("successMsg", "Profile updated successfully");
+        }
+        return "redirect:/admin/profile";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String newPassword, @RequestParam String currentPassword, Principal principal, HttpSession session) {
+
+        UserDtls user = commonUtil.getLoggedInUserDetails(principal);
+
+        boolean matches = passwordEncoder.matches(currentPassword, user.getPassword());
+
+        if(matches) {
+            String encodePassword = passwordEncoder.encode(newPassword);
+            user.setPassword(encodePassword);
+            UserDtls updateUser = userService.updateUser(user);
+
+            if(ObjectUtils.isEmpty(updateUser)) {
+                session.setAttribute("errorMsg", "Something went wrong. Password not changed.");
+            } else {
+                session.setAttribute("successMsg", "Password changed successfully.");
+            }
+        } else {
+            session.setAttribute("errorMsg", "Wrong password");
+        }
+        return "redirect:/admin/profile";
     }
 
 }

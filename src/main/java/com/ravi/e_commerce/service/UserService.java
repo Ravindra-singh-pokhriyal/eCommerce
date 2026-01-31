@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ravi.e_commerce.model.UserDtls;
 import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
@@ -13,6 +14,8 @@ public interface UserService {
     public UserDtls getUserByEmail(String email);
 
     public List<UserDtls> getUsers(String role);
+
+    public Page<UserDtls> getUserPagination(String role, Integer pageNo, Integer pageSize);
 
     public Boolean updateAccountStatus(Integer id, Boolean status);
 
@@ -31,4 +34,6 @@ public interface UserService {
     public UserDtls updateUser(UserDtls user);
 
     public UserDtls updateUserProfile(UserDtls user, MultipartFile img);
+
+    public UserDtls saveAdmin(UserDtls user);
 }

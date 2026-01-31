@@ -1,6 +1,7 @@
 package com.ravi.e_commerce.service;
 
 import com.ravi.e_commerce.model.Category;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface CategoryService {
     public Category getCategoryById(int id);
 
     public List<Category> getAllActiveCategory();
+
+    public Page<Category> getAllCategoryPagination(Integer pageNo, Integer pageSize);
 }

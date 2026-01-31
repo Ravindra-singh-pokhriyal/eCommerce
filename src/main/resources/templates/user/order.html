@@ -114,16 +114,32 @@
                                     <td>:</td>
                                     <td>&#8377; [[${orderPrice}]]</td>
                                 </tr>
-                                <tr>
-                                    <td>Delivery Fee</td>
-                                    <td>:</td>
-                                    <td>&#8377; 200</td>
-                                </tr>
-                                <tr>
-                                    <td>Tax</td>
-                                    <td>:</td>
-                                    <td>&#8377; 50</td>
-                                </tr>
+                                <!-- If orderPrice is null or zero, hide tax and delivery -->
+                                <th:block th:if="${orderPrice == null or orderPrice == 0}">
+                                    <tr>
+                                        <td>Delivery Fee</td>
+                                        <td>:</td>
+                                        <td>&#8377;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax</td>
+                                        <td>:</td>
+                                        <td>&#8377;</td>
+                                    </tr>
+                                </th:block>
+                                <!-- If orderPrice exists and greater than zero, show tax and delivery. Use model values if provided, otherwise fallback to defaults -->
+                                <th:block th:if="${orderPrice != null and orderPrice > 0}">
+                                    <tr>
+                                        <td>Delivery Fee</td>
+                                        <td>:</td>
+                                        <td>&#8377; [[${deliveryCharge != null ? deliveryCharge : 200}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax</td>
+                                        <td>:</td>
+                                        <td>&#8377; [[${tax != null ? tax : 50}]]</td>
+                                    </tr>
+                                </th:block>
 
                                 <tr>
                                     <td>Total Price</td>

@@ -1,6 +1,8 @@
 package com.ravi.e_commerce.util;
 
 import com.ravi.e_commerce.model.ProductOrder;
+import com.ravi.e_commerce.model.UserDtls;
+import com.ravi.e_commerce.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,12 +12,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 
 @Component
 public class CommonUtil {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private UserService userService;
 
     //Method to send mail to users
     public Boolean sentMail(String url, String reciepentEmail)
@@ -78,5 +84,12 @@ public class CommonUtil {
         helper.setText(msg, true);
         mailSender.send(message);
         return true;
+    }
+
+    //method to get logged in user details
+    public UserDtls getLoggedInUserDetails(Principal p) {
+        String email = p.getName();
+        UserDtls user = userService.getUserByEmail(email);
+        return user;
     }
 }

@@ -13,8 +13,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.management.MemoryUsage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,6 +33,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Page<Product> getAllProductPagination(Integer pageNo, Integer pageSize) {
+        Pageable pageable= PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -125,8 +129,31 @@ public class ProductServiceImpl implements ProductService {
         if (ObjectUtils.isEmpty(category)){
             pageProduct = productRepository.findByIsActiveTrue(pageable);
         } else {
-            pageProduct = productRepository.findByCategory(category, pageable);
+            pageProduct = productRepository.findByCategoryAndIsActiveTrue(category, pageable);
         }
+        return pageProduct;
+    }
+
+    @Override
+    public Page<Product> searchProductPagination(Integer pageNo, Integer pageSize, String ch) {
+        Pageable pageable= PageRequest.of(pageNo, pageSize);
+        return productRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(ch, ch, pageable);
+    }
+
+    @Override
+    public Page<Product> searchActiveProductPagination(Integer pageNo, Integer pageSize, String category, String ch) {
+
+        Page<Product> pageProduct = null;
+        Pageable pageable= PageRequest.of(pageNo, pageSize);
+
+        pageProduct=productRepository.findByIsActiveTrueAndTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(ch, ch, pageable);
+
+
+//        if (ObjectUtils.isEmpty(category)){
+//            pageProduct = productRepository.findByIsActiveTrue(pageable);
+//        } else {
+//            pageProduct = productRepository.findByCategory(category, pageable);
+//        }
         return pageProduct;
     }
 }
