@@ -74,7 +74,16 @@ public class Homecontroller {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        List<Category> allActiveCategory = categoryService.getAllActiveCategory().stream()
+                .sorted((c1,c2)->c2.getId().compareTo(c1.getId()))
+                .limit(6).toList();
+        List<Product> allActiveProduct = productService.getAllActiveProduct("").stream()
+                .sorted((p1,p2)->p2.getId().compareTo(p1.getId()))
+                .limit(8).toList();
+
+        model.addAttribute("categorys", allActiveCategory);
+        model.addAttribute("products",allActiveProduct);
         return "index";
     }
 
@@ -130,23 +139,32 @@ public class Homecontroller {
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
-        String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
-        user.setProfileImage(imageName);
-        UserDtls saveUser = userService.saveUser(user);
 
-        if(!ObjectUtils.isEmpty(saveUser)) {
-            if(!file.isEmpty()) {
-                File saveFile = new ClassPathResource("static/images").getFile();
+        Boolean existsEmail = userService.existsEmail(user.getEmail());
 
-                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
-                        + file.getOriginalFilename());
-
-                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            }
-            session.setAttribute("successMsg", "Register Successfully.");
+        if(existsEmail) {
+            session.setAttribute("errorMsg", "Email already exist");
         } else {
-            session.setAttribute("errorMsg", "Something went wrong!!");
+            String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+            user.setProfileImage(imageName);
+            UserDtls saveUser = userService.saveUser(user);
+
+            if(!ObjectUtils.isEmpty(saveUser)) {
+                if(!file.isEmpty()) {
+                    File saveFile = new ClassPathResource("static/images").getFile();
+
+                    Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+                            + file.getOriginalFilename());
+
+                    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                }
+                session.setAttribute("successMsg", "Register Successfully.");
+            } else {
+                session.setAttribute("errorMsg", "Something went wrong!!");
+            }
         }
+
+
         return "redirect:/register";
     }
 
@@ -216,28 +234,29 @@ public class Homecontroller {
         }
     }
 
-//    @GetMapping("/search")
-//    public String searchProduct(@RequestParam String ch, Model model) {
-//        // if search string is empty, show regular products page
-//        if (ch == null || ch.trim().isEmpty()) {
-//            return "redirect:/products";
-//        }
-//
-//        List<Product> products = productService.searchProducts(ch);
-//        model.addAttribute("products", products);
-//        model.addAttribute("productSize", products.size());
-//
-//        // Provide minimal pagination attributes expected by product.html
-//        model.addAttribute("pageNo", 0);
-//        model.addAttribute("pageSize", products.size() > 0 ? products.size() : 6);
-//        model.addAttribute("TotalElements", products.size());
-//        model.addAttribute("totalPages", 1);
-//        model.addAttribute("isFirst", true);
-//        model.addAttribute("isLast", true);
-//
-//        List<Category> categories = categoryService.getAllActiveCategory();
-//        model.addAttribute("categories", categories);
-//        model.addAttribute("paramValue", "");
-//        return "product";
-//    }
+    /*
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam String ch, Model model) {
+        // if search string is empty, show regular products page
+        if (ch == null || ch.trim().isEmpty()) {
+            return "redirect:/products";
+        }
+
+        List<Product> products = productService.searchProducts(ch);
+        model.addAttribute("products", products);
+        model.addAttribute("productSize", products.size());
+
+        // Provide minimal pagination attributes expected by product.html
+        model.addAttribute("pageNo", 0);
+        model.addAttribute("pageSize", products.size() > 0 ? products.size() : 6);
+        model.addAttribute("TotalElements", products.size());
+        model.addAttribute("totalPages", 1);
+        model.addAttribute("isFirst", true);
+        model.addAttribute("isLast", true);
+
+        List<Category> categories = categoryService.getAllActiveCategory();
+        model.addAttribute("categories", categories);
+        model.addAttribute("paramValue", "");
+        return "product";
+    }  */
 }

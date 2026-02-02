@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<UserDtls, Integer> {
     public UserDtls findByResetToken(String token);
 
     Page<UserDtls> findByRole(String role, Pageable pageable);
+
+    public Boolean existsByEmail(String email);
 }
