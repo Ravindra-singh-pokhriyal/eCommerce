@@ -99,7 +99,7 @@ public class Homecontroller {
 
     @GetMapping("/products")
     public String products(Model model,@RequestParam(defaultValue = "") String ch,@RequestParam(value = "category", defaultValue = "") String category,
-                           @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize){
+                           @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
 
         List<Category> categories = categoryService.getAllActiveCategory();
         model.addAttribute("categories", categories);
