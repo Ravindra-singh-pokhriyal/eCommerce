@@ -1,21 +1,18 @@
-<h1 align="center"> SpringVault Shop </h1>
-<p align="center"> The Secure, Modern, and Scalable E-commerce Platform Built on Java 21 and Spring Boot. </p>
+<h1 align="center"> Ecommerce </h1>
+<p align="center"> The Secure, Scalable Shopping Cart Solution Built with Spring Boot, Thymeleaf, and MySQL. </p>
 
 <p align="center">
-  <img alt="Build" src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=apache-maven">
-  <img alt="Language" src="https://img.shields.io/badge/Language-Java%2021-red?style=for-the-badge&logo=openjdk">
-  <img alt="Framework" src="https://img.shields.io/badge/Framework-Spring%20Boot%204.0.1-green?style=for-the-badge&logo=spring">
-  <img alt="Database" src="https://img.shields.io/badge/Database-MySQL%20JPA-blue?style=for-the-badge&logo=mysql">
-  <img alt="Code Style" src="https://img.shields.io/badge/Code%20Style-Lombok%20Enabled-orange?style=for-the-badge">
+  <img alt="Build" src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge">
+  <img alt="Java Version" src="https://img.shields.io/badge/Java-21-blue?style=for-the-badge">
+  <img alt="Framework" src="https://img.shields.io/badge/Framework-Spring%20Boot%204.0.1-green?style=for-the-badge">
+  <img alt="Contributions" src="https://img.shields.io/badge/Contributions-Welcome-orange?style=for-the-badge">
 </p>
 <!-- 
-  **Note:** These are static placeholder badges. Replace them with your project's actual badges, CI/CD status, and version numbers.
+  **Note:** These are static placeholder badges. Replace them with your project's actual badges.
   You can generate your own at https://shields.io
 -->
 
----
-
-## 📖 Table of Contents
+## 📋 Table of Contents
 
 - [⭐ Overview](#-overview)
 - [✨ Key Features](#-key-features)
@@ -24,342 +21,395 @@
 - [🚀 Getting Started](#-getting-started)
 - [🔧 Usage](#-usage)
 - [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
 
 ---
 
 ## ⭐ Overview
 
-SpringVault Shop is a robust, full-featured web application designed to demonstrate a complete, modern e-commerce lifecycle using the rigorous architecture of the Java ecosystem. It serves as a comprehensive reference implementation for building secure, scalable, and data-driven online stores.
+This project provides a robust, fully functional **web_app** e-commerce platform that manages product catalogs, user authentication, shopping cart functionality, and order processing. Built on the modern Spring Boot framework, it offers a secure, reliable foundation for creating an online retail presence.
 
-> Creating comprehensive, production-ready e-commerce solutions is a complex task, requiring careful handling of authentication, transactional integrity, state management (shopping carts), and detailed inventory and order workflows. Businesses need a solid, high-performance foundation that reliably handles complex business logic and data persistence without sacrificing development velocity or security.
+### The Problem
 
-SpringVault Shop eliminates the need to start from scratch by providing a meticulously structured, production-ready reference architecture built on Spring Boot 4.0.1 and the latest Java 21 standard. This foundation ensures a secure, scalable, and highly maintainable application suitable for high-traffic environments. It delivers comprehensive modules for secure user registration, detailed product catalog management, functional shopping cart persistence, and detailed administrative order tracking.
+> Building a cohesive, full-stack e-commerce solution requires meticulous handling of several critical components: secure user data management, transactional integrity (cart and orders), and a maintainable administrative interface. Developers often struggle to integrate these complex services into a single, scalable application while ensuring robust security and a dynamic user experience.
 
-The system utilizes a clean, layered architecture based on the Model-View-Controller (MVC) pattern. Spring Boot handles the core configuration and request routing, while Spring Data JPA manages seamless persistence to the MySQL database. Server-side rendering is efficiently handled by Thymeleaf, providing dynamic and secure view generation tailored for both end-users and administrators. This architecture ensures a clear separation of concerns, resulting in code that is easier to test, debug, and scale.
+### The Solution
+
+The **Ecommerce** platform delivers a complete, integrated solution. Leveraging the power of Spring Boot and Spring Data JPA, this application provides built-in mechanisms for persistence, security (utilizing custom Spring Security configurations), and dynamic content rendering via Thymeleaf templates. It separates concerns effectively, offering dedicated dashboards for administrators to manage inventory and users, while providing customers with a seamless shopping experience—from product browsing to secure checkout and order tracking.
+
+### Architecture Overview
+
+This application adheres to a classic Model-View-Controller (MVC) pattern, implemented using Spring Boot. Business logic resides in the `service` layer, handling transactions and complex operations, while the `controller` layer manages HTTP requests, and the `templates` (views) render dynamic HTML using Thymeleaf. Data persistence is handled efficiently by Spring Data JPA connected to a MySQL database.
 
 ---
 
 ## ✨ Key Features
 
-SpringVault Shop is engineered to deliver a comprehensive digital retail experience, broken down into functional, user-centric modules:
+The Ecommerce application is designed around user value, offering distinct capabilities for both customers and platform administrators.
 
-### 🛍️ Core E-commerce Functionality
+### 🛍️ Customer Experience Features
 
-*   **Dynamic Product Catalog Browsing:** Users can effortlessly browse products categorized by defined types (`Category.java`). Products feature detailed information, including images (`product_img/`), ensuring an engaging shopping experience (`view_product.html`).
-*   **Intuitive Shopping Cart Management:** Provides a persistent and interactive shopping cart system (`Cart.java`, `CartService.java`). Users can add, remove, and adjust quantities of products seamlessly before proceeding to checkout (`cart.html`).
-*   **Secure Order Placement:** Facilitates a robust checkout process, capturing necessary delivery details (`OrderAddress.java`) and finalizing the order, generating detailed records for tracking (`ProductOrder.java`).
-*   **Personalized Order Tracking:** Authenticated users can view a history of their purchases, including current status and details of past orders (`my_orders.html`).
+-   **Secure User Authentication & Profiles:** Users can securely register (`register.html`) and log in (`login.html`), benefiting from robust access control implemented via custom Spring Security configuration (`SecurityConfig.java`). Users also have dedicated profile management areas (`user/profile.html`).
+-   **Intuitive Product Catalog:** Browse a dynamically rendered list of available products (`product.html`) and view detailed specifications and images (`view_product.html`).
+-   **Seamless Shopping Cart Management:** Easily add products to a persistent shopping cart (`Cart` model) and manage quantities before checkout (`user/cart.html`).
+-   **Comprehensive Order Tracking:** Users can view their complete order history (`user/my_orders.html`) and track the status of current purchases, ensuring full visibility into the fulfillment process.
+-   **Password Recovery:** Built-in functionality for forgotten passwords using dedicated templating (`forgot_password.html`, `reset_password.html`) for enhanced user support.
 
-### 🔑 Security & User Management
+### ⚙️ Administrative Control Features
 
-*   **Custom Authentication Flow:** Implements a highly customized and secure user authentication system (`SecurityConfig.java`, `UserDetailsServiceImpl.java`) supporting both standard user and administrative roles.
-*   **Authentication Handlers:** Uses dedicated handlers (`AuthSuccessHandlerImpl.java`, `AuthFailureHandlerImpl.java`) to provide role-specific redirection upon login, enhancing user experience and security governance.
-*   **User Profiles and Account Control:** Allows users to register (`register.html`), log in (`login.html`), and manage forgotten or reset passwords (`forgot_password.html`, `reset_password.html`).
-
-### ⚙️ Administration & Inventory
-
-*   **Comprehensive Admin Dashboard:** A dedicated backend portal (`admin/index.html`) gives administrators complete control over the system's core components.
-*   **Inventory and Product Control:** Administrators can add new products (`add_product.html`), edit existing inventory details (`edit_product.html`), and manage product images.
-*   **Category Management:** Enables the creation, modification, and deletion of product categories (`category.html`, `edit_category.html`), ensuring the catalog remains organized and scalable.
-*   **User and Order Oversight:** Provides full visibility and control over all registered users (`users.html`) and the processing status of customer orders (`orders.html`).
+-   **Dashboard Management:** Access a dedicated, secure administrative dashboard (`admin/index.html`) to oversee all system activities.
+-   **Product Lifecycle Control:** Admins can add new products (`admin/add_product.html`), edit existing inventory details (`admin/edit_product.html`), and manage the entire product catalog (`admin/products.html`).
+-   **Category Organization:** Centralized management of product categories (`admin/category.html`) with the ability to edit existing categories (`admin/edit_category.html`), crucial for maintaining a structured store.
+-   **User and Order Oversight:** Manage the list of registered users (`admin/users.html`) and monitor all incoming and pending orders (`admin/orders.html`), ensuring timely fulfillment.
+-   **Admin Profile Management:** Secure area for administrative profile updates (`admin/profile.html`) and adding new administrator accounts (`admin/add_admin.html`).
 
 ---
 
 ## 🛠️ Tech Stack & Architecture
 
-This project is built using industry-leading, high-performance technologies, adhering to modern software development standards.
+This project is built using industry-leading, verified technologies to ensure high performance, security, and developer productivity. The core structure is driven by the Spring Ecosystem, managed entirely by Maven.
 
-| Technology | Version | Purpose | Why it was Chosen |
-| :--- | :--- | :--- | :--- |
-| **Java** | 21 | Primary Programming Language | Chosen for its robust performance, enterprise scalability, and long-term support (LTS) status, providing a reliable foundation. |
-| **Spring Boot** | 4.0.1 | Application Framework | Provides rapid application development capabilities, dependency injection, and automatic configuration, significantly simplifying the setup of a complex web application. |
-| **Spring Data JPA** | Starter | Data Persistence Layer | Abstracts the complexities of database operations, allowing for quick repository creation and efficient mapping between Java models and the relational database schema. |
-| **Spring WebMVC** | Starter | Web Layer/Controller Management | Implements the core Model-View-Controller pattern, ensuring clean separation of business logic, request handling, and view rendering. |
-| **Thymeleaf** | Starter | Server-Side Templating | Enables dynamic and secure rendering of HTML views (`index.html`, `base.html`, etc.) directly from the server, perfectly integrated with Spring MVC. |
-| **MySQL Connector/J** | Runtime | Database Connectivity | The necessary JDBC driver to facilitate reliable, high-performance connection and transactional management with the required MySQL database instance. |
-| **Lombok** | 1.18.42 | Code Generation Utility | Drastically reduces boilerplate code (getters, setters, constructors, logging) across all data models (`Product.java`, `Cart.java`), enhancing code clarity and maintainability. |
-| **Maven** | N/A | Build Automation Tool | Standardizes the project lifecycle, dependency management (`pom.xml`), and build process, ensuring consistent execution and distribution across development environments. |
+| Technology | Purpose | Why it was Chosen (Benefit) |
+| :--- | :--- | :--- |
+| **Java 21** | Primary Programming Language | Offers modern language features, strong performance, and long-term support for enterprise applications. |
+| **Spring Boot** | Core Application Framework | Provides rapid application development, auto-configuration, and robust dependency management, simplifying setup and deployment. |
+| **Spring Data JPA** | Data Persistence Layer | Simplifies database interactions by providing repository interfaces, dramatically reducing boilerplate code for CRUD operations. |
+| **MySQL Connector/J** | Database Driver | Enables reliable, high-speed connection between the Java application and the highly popular MySQL relational database. |
+| **Thymeleaf** | View Layer/Templating Engine | Offers natural templating capabilities, allowing designers to work on static prototypes that seamlessly integrate with Spring Boot data structures. |
+| **Lombok (1.18.42)** | Boilerplate Reduction Utility | Reduces tedious getter, setter, constructor, and logging code, leading to cleaner, more readable, and concise Java classes (Models). |
+| **Maven** | Build and Dependency Management | Provides a standardized process for building, testing, and managing the project's complex dependencies with version control and consistency. |
+| **Spring DevTools** | Development Utility | Enables faster development cycles through automatic restarts and live-reloading of changes during active development. |
 
 ---
 
 ## 📁 Project Structure
 
-The SpringVault Shop codebase is meticulously organized following standard Maven and Spring Boot conventions, promoting high maintainability and clarity.
+The project is meticulously organized to separate configuration, application logic, persistence layers, and static resources, ensuring high maintainability and clarity. The structure follows standard Maven conventions.
 
 ```
-Ravindra-singh-pokhriyal-eCommerce-d88d0ee/
-├── 📄 .gitattributes             # Git configuration for path attributes
-├── 📄 .gitignore                 # Files and directories ignored by Git
-├── 📄 pom.xml                    # Maven Project Object Model (dependencies, build configuration)
-├── 📄 mvnw                       # Maven wrapper script (Linux/macOS)
-├── 📄 mvnw.cmd                   # Maven wrapper script (Windows)
-├── 📂 .mvn/                      # Maven configuration files
-│   └── 📂 wrapper/               # Maven wrapper properties
-│       └── 📄 maven-wrapper.properties
-└── 📂 src/                       # Source code directory
-    ├── 📂 main/                  # Main application source code
-    │   ├── 📂 java/              # Java source code base
-    │   │   └── 📂 com/
-    │   │       └── 📂 ravi/
-    │   │           └── 📂 e_commerce/
-    │   │               ├── 📄 ECommerceApplication.java     # Main Spring Boot entry point
-    │   │               ├── 📂 config/                       # Security and application configuration
-    │   │               │   ├── 📄 SecurityConfig.java
-    │   │               │   ├── 📄 CustomUser.java
-    │   │               │   ├── 📄 UserDetailsServiceImpl.java
-    │   │               │   ├── 📄 AuthSuccessHandlerImpl.java
-    │   │               │   └── 📄 AuthFailureHandlerImpl.java
-    │   │               ├── 📂 controller/                   # Request handling layer (MVC)
-    │   │               │   ├── 📄 AdminController.java      # Handles requests for the administrative backend
-    │   │               │   ├── 📄 UserController.java       # Handles user-specific actions (profile, cart, orders)
-    │   │               │   └── 📄 Homecontroller.java       # Handles public and index routes
-    │   │               ├── 📂 model/                        # JPA Entities and Data Transfer Objects (DTOs)
-    │   │               │   ├── 📄 Product.java              # Entity for product details
-    │   │               │   ├── 📄 Category.java             # Entity for product categories
-    │   │               │   ├── 📄 UserDtls.java             # Entity for user details
-    │   │               │   ├── 📄 Cart.java                 # Entity for shopping cart items
-    │   │               │   ├── 📄 ProductOrder.java         # Entity for individual items within an order
-    │   │               │   ├── 📄 OrderRequest.java         # Data model for processing new orders
-    │   │               │   └── 📄 OrderAddress.java         # Data model for shipping/billing address
-    │   │               ├── 📂 repository/                   # Spring Data JPA repositories
-    │   │               │   ├── 📄 ProductRepository.java
-    │   │               │   ├── 📄 CartRepository.java
-    │   │               │   ├── 📄 CategoryRepository.java
-    │   │               │   ├── 📄 UserRepository.java
-    │   │               │   └── 📄 ProductOrderRepository.java
-    │   │               ├── 📂 service/                      # Business logic layer
-    │   │               │   ├── 📄 CommonService.java
-    │   │               │   ├── 📄 UserService.java
-    │   │               │   ├── 📄 ProductService.java
-    │   │               │   ├── 📄 CategoryService.java
-    │   │               │   ├── 📄 CartService.java
-    │   │               │   ├── 📄 OrderService.java
-    │   │               │   ├── 📄 CommonServiceImpl.java
-    │   │               │   └── 📂 impl/                     # Service implementations
-    │   │               │       ├── 📄 UserServiceImpl.java
-    │   │               │       ├── 📄 ProductServiceImpl.java
-    │   │               │       ├── 📄 OrderServiceImpl.java
-    │   │               │       └── 📄 CartServiceImpl.java
-    │   │               ├── 📂 util/                         # Utility classes and constants
-    │   │               │   ├── 📄 CommonUtil.java
-    │   │               │   ├── 📄 AppConstant.java
-    │   │               │   └── 📄 OrderStatus.java          # Enumeration for order lifecycle stages
-    │   │               └── 📂 service/
-    │   │                   └── 📂 impl/
-    │   │                       └── 📄 CategoryServiceImpl.java
-    │   └── 📂 resources/             # Static assets and configuration
-    │       ├── 📄 application.properties  # Main Spring Boot configuration (DB connections, port)
-    │       ├── 📂 static/               # Client-side static resources
-    │       │   ├── 📂 css/              # Stylesheets
-    │       │   │   └── 📄 style.css
-    │       │   ├── 📂 js/               # JavaScript files
-    │       │   │   └── 📄 script.js
-    │       │   └── 📂 images/           # Application-wide image assets
-    │       │       ├── 📄 ecom1.png
-    │       │       ├── 📄 carousel1.jpg
-    │       │       └── 📂 category_img/ # Category specific imagery
-    │       │           └── 📄 laptop.jpg
-    │       │           └── 📄 mobile.png
-    │       │       └── 📂 product_img/  # Inventory imagery
-    │       │           └── 📄 Samsung galaxy-a32-5g.webp
-    │       │       └── 📂 login/        # Login page specific images
-    │       │       └── 📂 profile_img/  # User profile default images
-    │       └── 📂 templates/            # Thymeleaf HTML views
-    │           ├── 📄 index.html          # Homepage
-    │           ├── 📄 base.html           # Layout fragment for shared elements
-    │           ├── 📄 login.html          # User login page
-    │           ├── 📄 register.html       # New user registration page
-    │           ├── 📄 product.html        # Product listing page
-    │           ├── 📄 view_product.html   # Detailed product view
-    │           ├── 📄 message.html
-    │           ├── 📄 forgot_password.html
-    │           ├── 📄 reset_password.html
-    │           ├── 📂 admin/              # Administrator-specific views
-    │           │   ├── 📄 index.html
-    │           │   ├── 📄 products.html
-    │           │   ├── 📄 orders.html
-    │           │   ├── 📄 users.html
-    │           │   ├── 📄 category.html
-    │           │   ├── 📄 add_product.html
-    │           │   ├── 📄 edit_product.html
-    │           │   └── 📄 edit_category.html
-    │           └── 📂 user/               # Authenticated user views
-    │               ├── 📄 home.html
-    │               ├── 📄 cart.html       # Shopping cart view
-    │               ├── 📄 order.html
-    │               ├── 📄 my_orders.html  # Order history view
-    │               └── 📄 success.html    # Order confirmation/success page
-    └── 📂 test/                      # Unit and integration tests
-        └── 📂 java/
-            └── 📂 com/
-                └── 📂 ravi/
-                    └── 📂 e_commerce/
-                        └── 📄 ECommerceApplicationTests.java # Application context loading tests
----
+📂 Ravindra-singh-pokhriyal-eCommerce-1c2b948/
+├── 📄 .gitattributes
+├── 📄 pom.xml                      # Maven Project Object Model (Dependencies & Build Configuration)
+├── 📄 mvnw.cmd                     # Maven Wrapper for Windows (Execution Script)
+├── 📄 mvnw                         # Maven Wrapper for Linux/macOS (Execution Script)
+├── 📄 README.md                    # Project Documentation (This file)
+├── 📄 .gitignore                   # Files and directories ignored by Git
+├── 📂 src/                         # Main source directory
+│   ├── 📂 test/
+│   │   ├── 📂 java/
+│   │       └── 📂 com/
+│   │           └── 📂 ravi/
+│   │               └── 📂 e_commerce/
+│   │                   └── 📄 ECommerceApplicationTests.java  # Core application test file
+│   └── 📂 main/
+│       ├── 📂 resources/           # Configuration and static resources
+│       │   ├── 📄 application.properties.example # Example file for database configuration
+│       │   ├── 📂 templates/       # Thymeleaf HTML view templates
+│       │   │   ├── 📄 reset_password.html      # Password reset page
+│       │   │   ├── 📄 login.html               # User login view
+│       │   │   ├── 📄 product.html             # Product listing page
+│       │   │   ├── 📄 register.html            # User registration view
+│       │   │   ├── 📄 view_product.html        # Single product detail view
+│       │   │   ├── 📄 message.html             # Generic message/feedback page
+│       │   │   ├── 📄 forgot_password.html     # Password recovery initiation
+│       │   │   ├── 📄 base.html                # Thymeleaf layout base template
+│       │   │   ├── 📄 index.html               # Public home page
+│       │   │   ├── 📂 admin/                   # Administrator views and dashboards
+│       │   │   │   ├── 📄 edit_product.html    # Edit existing product form
+│       │   │   │   ├── 📄 products.html        # Admin list of all products
+│       │   │   │   ├── 📄 add_product.html     # Add new product form
+│       │   │   │   ├── 📄 add_admin.html       # Form to add new admin users
+│       │   │   │   ├── 📄 users.html           # Admin list of all users
+│       │   │   │   ├── 📄 edit_category.html   # Edit existing category form
+│       │   │   │   ├── 📄 profile.html         # Admin profile management
+│       │   │   │   ├── 📄 category.html        # Admin category list/management
+│       │   │   │   ├── 📄 orders.html          # Admin view of all customer orders
+│       │   │   │   └── 📄 index.html           # Admin dashboard landing page
+│       │   │   └── 📂 user/                    # Authenticated customer views
+│       │   │       ├── 📄 cart.html            # Shopping cart view
+│       │   │       ├── 📄 success.html         # Post-transaction success page
+│       │   │       ├── 📄 home.html            # User's personalized home/dashboard
+│       │   │       ├── 📄 profile.html         # User profile management
+│       │   │       ├── 📄 order.html           # Specific order details view
+│       │   │       └── 📄 my_orders.html       # User's list of past orders
+│       │   └── 📂 static/            # Static assets (CSS, JS, Images)
+│       │       ├── 📂 js/
+│       │       │   └── 📄 script.js          # Custom JavaScript functions
+│       │       ├── 📂 images/
+│       │       │   ├── 📄 ecom3.jpg
+│       │       │   ├── 📄 ecom.png
+│       │       │   ├── 📄 ecom2.jpg
+│       │       │   ├── 📄 carousel2.jpg
+│       │       │   ├── 📄 carousel1.jpg
+│       │       │   ├── 📄 carousel3.jpg
+│       │       │   ├── 📄 ecom1.png
+│       │       │   ├── 📂 login/             # Login specific images
+│       │       │   │   ├── 📄 login1.jpg
+│       │       │   │   └── 📄 login.jpg
+│       │       │   ├── 📂 product_img/       # Product-specific images (inventory assets)
+│       │       │   │   ├── 📄 TV.jpg
+│       │       │   │   ├── 📄 Samsung galaxy-a32-5g.webp
+│       │       │   │   ├── 📄 groccery.jpg
+│       │       │   │   ├── 📄 lipstcik.jpg
+│       │       │   │   ├── 📄 vivo v40.png
+│       │       │   │   ├── 📄 S22.avif
+│       │       │   │   ├── 📄 mobile.png
+│       │       │   │   ├── 📄 vivo v30 5G.png
+│       │       │   │   ├── 📄 asus vivobook 15-i5.jpg
+│       │       │   │   ├── 📄 laptop.jpg
+│       │       │   │   ├── 📄 pant.png
+│       │       │   │   ├── 📄 appli.png
+│       │       │   │   ├── 📄 beuty.png
+│       │       │   │   ├── 📄 Shirt.png
+│       │       │   │   └── 📄 pbi-iphone-15-pro-max.avif
+│       │       │   ├── 📂 profile_img/       # User profile images
+│       │       │   │   ├── 📄 img.txt
+│       │       │   │   └── 📄 ravi.jpg
+│       │       │   └── 📂 category_img/      # Category representation images
+│       │       │       ├── 📄 groccery.jpg
+│       │       │       ├── 📄 mobile.png
+│       │       │       ├── 📄 laptop.jpg
+│       │       │       ├── 📄 pant.png
+│       │       │       ├── 📄 appli.png
+│       │       │       └── 📄 beuty.png
+│       │       └── 📂 css/
+│       │           └── 📄 style.css          # Application styling
+│       └── 📂 java/
+│           └── 📂 com/
+│               └── 📂 ravi/
+│                   └── 📂 e_commerce/
+│                       ├── 📄 ECommerceApplication.java   # Main Spring Boot entry point
+│                       ├── 📂 config/                     # Spring Security and custom configuration
+│                       │   ├── 📄 CustomUser.java
+│                       │   ├── 📄 AuthSuccessHandlerImpl.java # Custom success handler for post-login redirection
+│                       │   ├── 📄 UserDetailsServiceImpl.java # Service for loading user-specific data during authentication
+│                       │   ├── 📄 SecurityConfig.java       # Core Spring Security configuration
+│                       │   └── 📄 AuthFailureHandlerImpl.java # Custom failure handler for login errors
+│                       ├── 📂 repository/                 # Spring Data JPA repositories
+│                       │   ├── 📄 CategoryRepository.java
+│                       │   ├── 📄 UserRepository.java
+│                       │   ├── 📄 CartRepository.java
+│                       │   ├── 📄 ProductRepository.java
+│                       │   └── 📄 ProductOrderRepository.java
+│                       ├── 📂 service/                    # Business logic interfaces
+│                       │   ├── 📄 CategoryService.java
+│                       │   ├── 📄 OrderService.java
+│                       │   ├── 📄 UserService.java
+│                       │   ├── 📄 CommonServiceImpl.java
+│                       │   ├── 📄 CartService.java
+│                       │   ├── 📄 CommonService.java
+│                       │   ├── 📄 ProductService.java
+│                       │   └── 📂 impl/                   # Business logic implementations
+│                       │       ├── 📄 CategoryServiceImpl.java
+│                       │       ├── 📄 CartServiceImpl.java
+│                       │       ├── 📄 OrderServiceImpl.java
+│                       │       ├── 📄 UserServiceImpl.java
+│                       │       └── 📄 ProductServiceImpl.java
+│                       ├── 📂 model/                      # JPA Entities and DTOs (Data Models)
+│                       │   ├── 📄 ProductOrder.java       # Model for tracking specific ordered products
+│                       │   ├── 📄 UserDtls.java           # User details entity (main user model)
+│                       │   ├── 📄 OrderRequest.java       # DTO/Model for capturing order submission data
+│                       │   ├── 📄 Cart.java               # Shopping cart item entity
+│                       │   ├── 📄 Product.java            # Product catalog entity
+│                       │   ├── 📄 Category.java           # Product category entity
+│                       │   └── 📄 OrderAddress.java       # Model for customer shipping address
+│                       ├── 📂 util/                       # Helper classes and constants
+│                       │   ├── 📄 CommonUtil.java
+│                       │   ├── 📄 AppConstant.java
+│                       │   └── 📄 OrderStatus.java        # Enum/Class defining possible order states
+│                       └── 📂 controller/                 # MVC Controllers (Request handling)
+│                           ├── 📄 Homecontroller.java     # Handles public, non-authenticated routes
+│                           ├── 📄 UserController.java     # Handles authenticated customer actions
+│                           └── 📄 AdminController.java    # Handles secured administrative actions
+├── 📂 bin/                         # Compiled class files and secondary structure (often generated during build)
+│   ├── 📄 .gitattributes
+│   ├── 📄 pom.xml
+│   ├── 📄 mvnw.cmd
+│   ├── 📄 mvnw
+│   ├── 📄 .gitignore
+│   ├── 📂 src/
+│   │   ├── 📂 test/
+│   │   │   └── 📂 java/
+│   │   │       └── 📂 com/
+│   │   │           └── 📂 ravi/
+│   │   │               └── 📂 e_commerce/
+│   │   │                   └── 📄 ECommerceApplicationTests.class
+│   │   └── 📂 main/
+│   │       ├── 📂 resources/
+│   │       │   ├── 📄 application.properties # Active configuration file
+│   │       │   └── 📂 templates/
+│   │       │       └── 📄 index.html
+│   │       └── 📂 java/
+│   │           └── 📂 com/
+│   │               └── 📂 ravi/
+│   │                   └── 📂 e_commerce/
+│   │                       ├── 📄 ECommerceApplication.class
+│   │                       └── 📂 controller/
+│   │                           └── 📄 Homecontroller.class
+│   └── 📂 .mvn/
+│       └── 📂 wrapper/
+│           └── 📄 maven-wrapper.properties
+└── 📂 .mvn/                        # Maven wrapper configuration
+    └── 📂 wrapper/
+        └── 📄 maven-wrapper.properties # Properties for Maven version and repository path
+```
 
+---
 
 ## 🚀 Getting Started
 
-To set up and run the SpringVault Shop application locally, ensure you meet the prerequisite requirements and follow the defined installation steps.
+To run the **Ecommerce** application locally, you must satisfy the core software requirements specified by the `pom.xml` and the configuration files.
 
 ### Prerequisites
 
-You must have the following software installed on your development machine:
+Ensure you have the following software installed on your system:
 
-1.  **Java Development Kit (JDK) 21 or higher:** This project is built using Java 21 features and requires a compatible runtime environment.
-2.  **Apache Maven:** Used as the build automation and dependency management tool, as defined in `pom.xml`.
-3.  **MySQL Server:** A running instance of MySQL is required for data persistence, managed via Spring Data JPA.
+1.  **Java Development Kit (JDK) 21:** This project explicitly targets Java 21, as defined in the `pom.xml`.
+2.  **Apache Maven:** Used for building the project and managing dependencies. (The provided `mvnw` wrapper scripts can typically handle this automatically.)
+3.  **MySQL Server:** Required for data persistence, as the project uses the `mysql-connector-j` dependency and Spring Data JPA.
 
-### Database Setup
+### Installation
 
-The application connects to a MySQL database using the `mysql-connector-j` dependency.
+Follow these steps to set up and run the application:
 
-1.  **Create Database Schema:** Log into your MySQL instance and create a new schema (e.g., `ecommercedb`).
+#### 1. Clone the Repository
 
-    ```sql
-    CREATE DATABASE ecommercedb;
-    ```
+```bash
+git clone https://github.com/Ravindra-singh-pokhriyal-eCommerce-1c2b948.git
+cd Ravindra-singh-pokhriyal-eCommerce-1c2b948
+```
 
-2.  **Configure Connection:** Open the main configuration file located at `src/main/resources/application.properties`. Update the following properties to match your MySQL database credentials, replacing placeholders for hostname, port, database name, username, and password:
+#### 2. Configure Database Connection
 
-    ```properties
-    # Example database configuration in application.properties
-    spring.datasource.url=jdbc:mysql://localhost:3306/ecommercedb
-    spring.datasource.username=your_db_username
-    spring.datasource.password=your_db_password
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+The application uses an external MySQL database for persistence.
 
-    # Ensure JPA creates/updates tables automatically on startup
-    spring.jpa.hibernate.ddl-auto=update
-    spring.jpa.show-sql=true
-    ```
-    *Note: The application relies on `spring.jpa.hibernate.ddl-auto=update` to automatically create tables based on the defined Model entities (`Product.java`, `UserDtls.java`, etc.).*
+1.  Ensure your MySQL server is running.
+2.  Create a new schema (database) dedicated to this project (e.g., `ecommerce_db`).
+3.  Locate the example configuration file: `src/main/resources/application.properties.example`.
+4.  Copy this file and rename it to `src/main/resources/application.properties`.
 
-### Installation and Build
+```bash
+# Example configuration adjustments (inside application.properties)
+# Update these placeholders with your actual MySQL credentials
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce_db?useSSL=false
+spring.datasource.username=YOUR_MYSQL_USER
+spring.datasource.password=YOUR_MYSQL_PASSWORD
 
-Follow these steps to clone the repository and build the executable application using Maven:
+# Ensure JPA is configured to create/update tables automatically
+spring.jpa.hibernate.ddl-auto=update
+```
 
-1.  **Clone the Repository:**
+#### 3. Build and Run the Application
 
-    ```bash
-    git clone [Repository URL Here] Ravindra-singh-pokhriyal-eCommerce-d88d0ee
-    cd Ravindra-singh-pokhriyal-eCommerce-d88d0ee
-    ```
+Use the Maven wrapper (`mvnw`) to compile and package the Spring Boot application.
 
-2.  **Clean and Build Project:** Use the Maven Wrapper (`mvnw` or `mvnw.cmd`) to download dependencies and compile the Java code.
+**On Linux/macOS:**
+```bash
+# Grant execution permissions to the wrapper
+chmod +x mvnw
 
-    ```bash
-    # For Linux/macOS
-    ./mvnw clean install
+# Compile, package, and run the application
+./mvnw spring-boot:run
+```
 
-    # For Windows
-    .\mvnw.cmd clean install
-    ```
-    This command will download all required dependencies listed in `pom.xml` (including Spring Boot starters, Thymeleaf, and Lombok) and package the application into a JAR file.
+**On Windows:**
+```bash
+# Compile, package, and run the application
+mvnw spring-boot:run
+```
 
-3.  **Run the Application:** Execute the compiled Spring Boot application using the `spring-boot:run` goal.
-
-    ```bash
-    ./mvnw spring-boot:run
-    ```
-
-The application will start, typically running on `http://localhost:8080`, unless specified otherwise in `application.properties`. Check the console output for confirmation that `ECommerceApplication.java` has successfully initialized the Spring context.
+The application will start, typically running on `http://localhost:8080`. The Spring Security component will initialize, providing secure access control for user and admin roles.
 
 ---
 
 ## 🔧 Usage
 
-Once the SpringVault Shop is running, it operates as a full-featured web application accessible via any standard web browser.
+The **Ecommerce** project is a full-featured **web_app** requiring only a modern web browser for interaction once running.
 
-### Accessing the Web Application
+### Accessing the Platform
 
-The application is hosted locally at:
+Once the application is successfully started (look for the Spring Boot banner and log indicating the server started on port 8080):
 
-```
-http://localhost:8080
-```
+1.  Open your web browser and navigate to: `http://localhost:8080`
 
-### 1. User E-commerce Flow
+### Customer Workflow
 
-This flow mirrors a standard online shopping experience, utilizing the `UserController.java` and public templates.
+Users interact primarily through the `Homecontroller` and `UserController` routes:
 
-| Step | Action | Endpoint/Template | Functionality Description |
-| :--- | :--- | :--- | :--- |
-| **Registration** | Create a new user account. | `/register` (via `register.html`) | Establishes a new `UserDtls` entry in the database. |
-| **Authentication** | Log into the system. | `/login` (via `login.html`) | Authenticates against `UserDetailsServiceImpl` and redirects based on user role (User/Admin). |
-| **Browsing** | View products and categories. | `/` or `/product` (via `index.html`, `product.html`) | Displays the catalog, leveraging `ProductService` and `CategoryService`. |
-| **Shopping Cart** | Add items and review purchases. | `/cart` (via `cart.html`) | Manages cart state via `CartService` and `Cart.java` models. |
-| **Checkout** | Finalize the order transaction. | `/order` (via `order.html`) | Captures shipping details (`OrderAddress.java`) and saves the transactional order data. |
-| **History** | View past orders. | `/user/my_orders` (via `my_orders.html`) | Displays order history managed by `OrderService`. |
+1.  **Registration:** Navigate to `/register` to create a new user account (`register.html`).
+2.  **Login:** Access the application via `/login` (`login.html`). Upon successful authentication, users are directed to their personalized home view (`user/home.html`) or handled by `AuthSuccessHandlerImpl`.
+3.  **Browsing:** View the product catalog and click on individual items for detailed views (`product.html`, `view_product.html`).
+4.  **Shopping:** Add products to the cart and proceed to `/cart` (`user/cart.html`) for review and checkout.
+5.  **Order Management:** Track past purchases through the dedicated orders page (`user/my_orders.html`).
 
-### 2. Administrator Management Flow
+### Administrative Workflow
 
-Access to the administrative dashboard is secured and role-gated, accessible via the `AdminController.java`.
+Administrative access is secured and managed by the `AdminController`.
 
-1.  **Admin Login:** Log in using credentials associated with the administrative role. The system will redirect to the admin dashboard (`admin/index.html`).
-2.  **Product Management:** Navigate to the products section to perform CRUD (Create, Read, Update, Delete) operations. This allows the administrator to maintain inventory using the forms provided by `add_product.html` and `edit_product.html`.
-3.  **Category Management:** Update or add new categories to organize the product catalog via `admin/category.html`.
-4.  **Order Fulfillment:** View all customer orders on the `admin/orders.html` page, update the `OrderStatus` for fulfillment, shipping, and delivery.
-5.  **User Oversight:** Monitor and manage all registered user accounts via the `admin/users.html` interface.
+1.  **Access:** Log in with a user configured with the 'ADMIN' role (you may need to manually seed the database or use a script to set up the first admin user).
+2.  **Dashboard:** Access the administrative hub, typically at `/admin/index` (`admin/index.html`).
+3.  **Product Management:** Use the dedicated product routes (`admin/add_product.html`, `admin/products.html`) to maintain inventory, including updating images stored in `src/main/resources/static/images/product_img/`.
+4.  **Order Fulfillment:** Monitor pending and fulfilled orders via the orders management page (`admin/orders.html`). Admins are responsible for updating `OrderStatus` for products.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions to improve **SpringVault Shop**! Your input helps make this project better for everyone and strengthens this reference implementation for the Spring community.
+We welcome contributions to improve the **Ecommerce** platform! Your input helps make this project better for everyone by enhancing features, fixing bugs, and improving documentation.
 
 ### How to Contribute
 
-1. **Fork the repository** - Click the 'Fork' button at the top right of this page.
-2. **Clone your fork** - Get the codebase onto your local machine.
-3. **Create a feature branch** 
+1. **Fork the repository** - Click the 'Fork' button at the top right of this page
+2. **Create a feature branch** 
    ```bash
-   git checkout -b feature/refactor-cart-service-logic
+   git checkout -b feature/amazing-feature
    ```
-4. **Make your changes** - Focus on clear, atomic changes. Improve Java code, Thymeleaf templates, utility classes (`CommonUtil.java`), or update documentation.
-5. **Test thoroughly** - Ensure all existing functionality and your new additions work as expected. Although the analysis noted a dedicated `test` directory, you should rely on standard JUnit/Spring Boot testing practices.
+3. **Make your changes** - Improve code, documentation, or features within the Java controllers, services, repositories, or Thymeleaf templates.
+4. **Test thoroughly** - Ensure all existing and new functionality works as expected. Run unit tests if provided (e.g., `ECommerceApplicationTests.java`).
    ```bash
    ./mvnw test
    ```
-6. **Commit your changes** - Write clear, descriptive commit messages following conventional guidelines (e.g., `Fix:`, `Feat:`, `Refactor:`).
+5. **Commit your changes** - Write clear, descriptive commit messages focusing on the purpose of the change.
    ```bash
-   git commit -m 'Feat: Implemented transactional support for order address saving'
+   git commit -m 'Feat: Implement dynamic category fetching in AdminController'
    ```
-7. **Push to your branch**
+6. **Push to your branch**
    ```bash
-   git push origin feature/refactor-cart-service-logic
+   git push origin feature/amazing-feature
    ```
-8. **Open a Pull Request** - Submit your changes from your fork back to the main repository for review by the maintainers.
+7. **Open a Pull Request** - Submit your changes for review against the main branch.
 
 ### Development Guidelines
 
-- ✅ Follow the existing Java/Spring Boot code style and conventions (especially the Service/Controller/Repository structure).
-- 📝 Add Javadocs for complex methods and classes, particularly within the `service/impl` packages.
-- 🧪 Write corresponding unit or integration tests for new business logic introduced in services.
-- 📚 Update the README or create new documentation if you change critical configuration or application flow.
-- 🔄 Ensure changes maintain backward compatibility where possible.
-- 🎯 Keep commits focused and atomic to simplify the review process.
+-   ✅ **Code Style:** Follow the existing Spring and Java coding conventions. Utilize Lombok annotations responsibly for clean code.
+-   📝 **Documentation:** Add Javadocs for new classes and complex methods within the `service` and `controller` layers.
+-   🧪 **Testing:** Write integration tests, especially for new repository or service layer logic, utilizing the provided test dependencies like `spring-boot-starter-data-jpa-test`.
+-   📚 **Template Consistency:** Maintain the structure and styling found in `src/main/resources/templates/base.html` when adding new views.
+-   🎯 **Commit Focus:** Keep commits atomic, focusing on one logical change per commit.
 
 ### Ideas for Contributions
 
-We're actively seeking help with:
+We're looking for help with improvements in several areas:
 
-- 🐛 **Bug Fixes:** Address any runtime exceptions or logical errors, particularly around the complex order processing flow.
-- ✨ **Feature Enhancements:** Integrate payment gateway stubs or advanced user filtering features for administrators.
-- 📖 **Documentation:** Improve the setup guide for the MySQL connection and initial data population.
-- ⚡ **Performance:** Optimize JPA queries within the repository layer for high-volume endpoints.
-- 🧪 **Testing:** Increase test coverage for critical business logic within the `OrderServiceImpl.java` and `CartServiceImpl.java`.
+-   🐛 **Bug Fixes:** Address any issues related to transactional integrity or security configurations.
+-   ✨ **Feature Enhancements:** Expanding checkout options or advanced user filtering for the administrative dashboard.
+-   📖 **Documentation:** Creating detailed guides for deploying the application to cloud environments (e.g., AWS, Azure).
+-   🎨 **UI/UX:** Modernizing the CSS (`style.css`) and improving the responsiveness of the Thymeleaf templates.
+-   ⚡ **Performance:** Optimizing database queries defined within the JPA repositories.
 
 ### Code Review Process
 
-- All submissions require review by one or more maintainers before merging.
-- Maintainers will provide constructive feedback based on best practices and project goals.
-- Changes may be requested to meet quality or style standards before final approval.
-- Once approved, your PR will be merged, and you will be credited for your contribution.
+-   All submissions are subject to a detailed code review by project maintainers.
+-   We aim to provide constructive feedback quickly to facilitate rapid integration.
+-   Once approved, your Pull Request will be merged, and you will be credited as a contributor to the **Ecommerce** project.
+
+### Questions?
+
+Feel free to open an issue for any questions regarding the codebase or contributions. We appreciate your interest!
 
 ---
 
-<p align="center">Made by Ravindra Singh Pokhriyal by Java and Spring Boot</p>
+<p align="center">Made By Ravindra Singh Pokhriyal</p>
 <p align="center">
-  <a href="#-table-of-contents">⬆️ Back to Top</a>
+  <a href="#">⬆️ Back to Top</a>
 </p>
